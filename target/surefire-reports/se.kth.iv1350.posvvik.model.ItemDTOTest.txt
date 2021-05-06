@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: se.kth.iv1350.posvvik.model.ItemDTOTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE!
+se.kth.iv1350.posvvik.model.ItemDTOTest.testGetName()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "se.kth.iv1350.posvvik.model.ItemDTO.getName()" because "instance" is null
+	at se.kth.iv1350.posvvik.model.ItemDTOTest.testGetName(ItemDTOTest.java:46)
+
+se.kth.iv1350.posvvik.model.ItemDTOTest.testGetItemId()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "se.kth.iv1350.posvvik.model.ItemDTO.getItemId()" because "instance" is null
+	at se.kth.iv1350.posvvik.model.ItemDTOTest.testGetItemId(ItemDTOTest.java:56)
+
+se.kth.iv1350.posvvik.model.ItemDTOTest.testGetVat()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "se.kth.iv1350.posvvik.model.ItemDTO.getVat()" because "instance" is null
+	at se.kth.iv1350.posvvik.model.ItemDTOTest.testGetVat(ItemDTOTest.java:36)
+
+se.kth.iv1350.posvvik.model.ItemDTOTest.testGetTotalPrice()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "se.kth.iv1350.posvvik.model.ItemDTO.getTotalPrice()" because "instance" is null
+	at se.kth.iv1350.posvvik.model.ItemDTOTest.testGetTotalPrice(ItemDTOTest.java:26)
+

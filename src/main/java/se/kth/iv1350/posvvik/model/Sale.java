@@ -1,8 +1,9 @@
 package se.kth.iv1350.posvvik.model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  *

@@ -5,17 +5,22 @@
  */
 package se.kth.iv1350.posvvik.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import se.kth.iv1350.posvvik.integration.AccountingSystem;
 import se.kth.iv1350.posvvik.integration.CashRegister;
+import se.kth.iv1350.posvvik.integration.DBSException;
 import se.kth.iv1350.posvvik.integration.DiscountCatalog;
 import se.kth.iv1350.posvvik.integration.Display;
 import se.kth.iv1350.posvvik.integration.InventorySystem;
+import se.kth.iv1350.posvvik.integration.NoSuchItemIdentifierException;
 import se.kth.iv1350.posvvik.integration.Printer;
 import se.kth.iv1350.posvvik.integration.SystemCreator;
 import se.kth.iv1350.posvvik.model.ItemDTO;
 import se.kth.iv1350.posvvik.model.ItemIdentifier;
 import se.kth.iv1350.posvvik.model.Payment;
 import se.kth.iv1350.posvvik.model.Receipt;
+import se.kth.iv1350.posvvik.model.RevenueObserver;
 import se.kth.iv1350.posvvik.model.Sale;
 
 /**
@@ -32,6 +37,7 @@ public class Controller {
     private CashRegister cashReg;
     private Sale sale;
     private Payment payment;
+    private List<RevenueObserver> revenueObservers = new ArrayList<>();
     /**
      * Aquries all the systems from the integration layer
      * @param sysCrtr The object that initializes all external systems.
@@ -53,12 +59,19 @@ public class Controller {
     /**
      * Registers item and updates display with the sale.
      * @param itemId The itemId of the product
+     * @throws NoSuchItemIdentifierException itemId not found
+     * @throws OperationFailedException
+     * @throws DBSException if system can't connect to Database Server
      */
-    public void scanItem(ItemIdentifier itemId){
-        
-        ItemDTO item = this.invSys.retrieveItemInfo(itemId);
-        sale.registerItem(item);
-        disp.displaySale(sale);
+    public void scanItem(ItemIdentifier itemId) throws OperationFailedException, DBSException{
+        try{
+            ItemDTO item = this.invSys.retrieveItemInfo(itemId);
+            sale.registerItem(item);
+            disp.displaySale(sale);
+        }
+        catch(NoSuchItemIdentifierException noItemId){
+            throw new OperationFailedException("Operation failed", noItemId);
+        }
     }
     /**
      * Makes the call to make a new payment and make a receipt out of it.
@@ -66,6 +79,7 @@ public class Controller {
      */
     public void pay(double amountPaid){
         payment = new Payment(amountPaid,sale);
+        paymentAddObservers();
         Receipt receipt = new Receipt(sale,payment);
         printer.print(receipt);
     }
@@ -76,5 +90,16 @@ public class Controller {
         cashReg.updateCashRegister(payment);
         invSys.removeItems(sale);
         accSys.addSale(sale);
+    }
+    /**
+     * Add a revenue observer
+     * @param obs Observer added
+     */
+    public void addRevenueObserver(RevenueObserver obs){
+        revenueObservers.add(obs);
+        
+    }
+    public void paymentAddObservers(){
+        payment.addRevenueObservers(revenueObservers);
     }
 }

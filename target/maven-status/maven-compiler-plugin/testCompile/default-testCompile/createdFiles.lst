@@ -1,3 +1,5 @@
-se\kth\iv1350\posvvik\model\SaleTest.class
+se\kth\iv1350\posvvik\integration\SystemCreatorTest.class
 se\kth\iv1350\posvvik\startup\MainTest.class
 se\kth\iv1350\posvvik\integration\InventorySystemTest.class
+se\kth\iv1350\posvvik\model\SaleTest.class
+se\kth\iv1350\posvvik\controller\ControllerTest.class

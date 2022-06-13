@@ -12,6 +12,6 @@ public class Display {
      * @param sale Used to get the sale info
      */
     public void displaySale(Sale sale){
-        System.out.print(sale.toString());
+        //System.out.print(sale.toString());
     }
 }

@@ -9,20 +9,56 @@ import se.kth.iv1350.posvvik.model.Sale;
 
 public class InventorySystemTest {
     @Test
-    public void testRetrieveItemInfo() {
-        System.out.println("retrieveItemInfo");
-        ItemIdentifier itemId = new ItemIdentifier(1);
-        InventorySystem instance = new InventorySystem();
-        ItemDTO expResultItem = new ItemDTO(itemId);
-        ItemDTO resultItem = instance.retrieveItemInfo(itemId);
-        String expResult = expResultItem.getName();
-        String result = resultItem.getName();
-        assertEquals(expResult, result,"The items does not match!");
-    }
+    public void testRetrieveItemInfo() throws NoSuchItemIdentifierException, DBSException {
 
+        ItemIdentifier itemId = new ItemIdentifier(1);
+        ItemDTO expResultItem = new ItemDTO(itemId);
+        try{
+            InventorySystem instance = new InventorySystem();
+            ItemDTO resultItem = instance.retrieveItemInfo(itemId);
+        }
+        catch(NoSuchItemIdentifierException e){
+            fail("Item identifier not found");
+        }
+        catch(DBSException e){
+            fail("Could not connect to database server");
+        }
+    }
     @Test
-    public void testRemoveItems() {
-        System.out.println("removeItems");
+    public void testRetriveNonExistentItemInfo(){
+        ItemIdentifier itemId = new ItemIdentifier(5);
+        ItemDTO expResultItem = new ItemDTO(itemId);
+        try{
+            InventorySystem instance = new InventorySystem();
+            ItemDTO resultItem = instance.retrieveItemInfo(itemId);
+            fail("Could rettrieve non existent item info!");
+        }
+        catch(NoSuchItemIdentifierException e){
+            assertTrue(itemId.getItemNo() > 4 || itemId.getItemNo() < 1);
+        }
+        catch(DBSException e){
+            fail("Could not connect to database server");
+        }
+    }
+    @Test
+    public void testRetriveItemInfoDBSExc(){
+        ItemIdentifier itemId = new ItemIdentifier(4);
+        ItemDTO expResultItem = new ItemDTO(itemId);
+        try{
+            InventorySystem instance = new InventorySystem();
+            ItemDTO resultItem = instance.retrieveItemInfo(itemId);
+            fail("Could connect to database server!");
+        }
+        catch(NoSuchItemIdentifierException e){
+            fail("Item identifier not found");
+        }
+        catch(DBSException e){
+            assertTrue(itemId.getItemNo() == 4);
+        }
+    }
+    @Test
+    public void testRemoveItems() throws NoSuchItemIdentifierException, DBSException {
+        //System.out.println("removeItems");
         Sale sale = new Sale();
         ItemIdentifier itemId = new ItemIdentifier(1);
         ItemDTO item = new ItemDTO(itemId);

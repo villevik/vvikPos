@@ -7,6 +7,8 @@ package se.kth.iv1350.posvvik.startup;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import se.kth.iv1350.posvvik.integration.DBSException;
+import se.kth.iv1350.posvvik.integration.ExternalSystemFail;
 
 /**
  *
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    public void testMain() {
+    public void testMain() throws ExternalSystemFail, DBSException {
         String[] args = null;
         Main.main(args);
     }

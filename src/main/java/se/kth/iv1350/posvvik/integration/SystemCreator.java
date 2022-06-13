@@ -1,5 +1,9 @@
 package se.kth.iv1350.posvvik.integration;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import se.kth.iv1350.posvvik.controller.OperationFailedException;
+
 /**
  *  SystemCreator is in charge of creating an object of all the external 
  *  systems and cointains methods for getting references to these.
@@ -11,15 +15,23 @@ public class SystemCreator {
     private DiscountCatalog discCat;
     private InventorySystem invSys;
     private AccountingSystem accSys;
+    private ExternalSystemFail exSysFail;
     /**
      * creates instances of the external systems.
+     * @throws ExternalSystemFail When system creator fails to create a system
+     * @throws DBSException When system can't connect to Database Server
      */
-    public SystemCreator(){
+    public SystemCreator() throws ExternalSystemFail, DBSException {
+        
         printer = new Printer();
         disp = new Display();
         discCat = new DiscountCatalog();
-        invSys = new InventorySystem();
         accSys = new AccountingSystem();
+        try {               
+            invSys = new InventorySystem();
+        } catch (NoSuchItemIdentifierException ex) {
+            throw new ExternalSystemFail("External system fail");
+        }
     }
     /**
      * Gives a refernce to the external accounting system.
